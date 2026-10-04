@@ -1,5 +1,7 @@
 # ActionTrail
 
+**Current version: 1.5.5**
+
 ActionTrail is a lightweight **World of Warcraft: Forever** addon for visualizing your own recent actions and debugging GSE/WoWLazyMacros sequences.
 
 It is designed as a diagnostic tool: ActionTrail observes what the WoW client reports for your character and displays it. It does **not** cast spells, press buttons, or automate gameplay.
@@ -13,15 +15,14 @@ It is designed as a diagnostic tool: ActionTrail observes what the WoW client re
 - Special handling for auto-repeat abilities such as **Shoot (SpellID 5019)**
 - Optional GSE debug panel with click number, GSE step, detected spell, and click-to-cast timing
 - German and English interface, including minimap tooltip text
-- Movable minimap button
+- Movable minimap button with dedicated ActionTrail icon
+- GSE executor rescan and hook diagnostics
 
 ## Installation
 
-1. Download the latest release ZIP.
-2. Extract the `ActionTrail` folder into:
-   `World of Warcraft/_classic_/Interface/AddOns/`
-   (use the appropriate WoW Forever AddOns folder for your installation.)
-3. Start/reload WoW.
+1. Download the current ActionTrail ZIP.
+2. Extract the `ActionTrail` folder into the appropriate WoW Forever `Interface/AddOns/` folder.
+3. Start or reload WoW.
 4. Type `/at` to open the settings.
 
 ## Language
@@ -31,7 +32,7 @@ Use:
 - `/at lang de` — German
 - `/at lang en` — English
 
-Changing the language reloads the UI so every menu and tooltip is refreshed consistently.
+The active language is also selectable from the ActionTrail settings window.
 
 ## Useful commands
 
@@ -49,6 +50,7 @@ Changing the language reloads the UI so every menu and tooltip is refreshed cons
 - `/at fadetime 2-20`
 - `/at gsedebug on|off`
 - `/at gseempty on|off`
+- `/at gsescan`
 - `/at gseclear`
 - `/at status`
 
@@ -59,11 +61,11 @@ ActionTrail does not change a GSE sequence or its secure attributes. The optiona
 Example:
 
 ```text
-G40  step 1  Shadow Word: Pain  +103ms
-G39  step 1  Shoot [5019]      +244ms
+G156  step 1  Sinister Strike  +77ms
+G121  step 1  Sinister Strike  +93ms
 ```
 
-This makes it useful for checking whether a sequence advances as expected, whether an action was actually accepted by the client, and how auto-repeat abilities behave.
+`/at gsescan` forces a fresh scan for GSE executor buttons. `/at status` reports the number of hooked GSE executors.
 
 ## Compatibility
 
@@ -72,6 +74,10 @@ Developed and tested for **WoW Forever** (Interface `16001`).
 ## Privacy / telemetry
 
 ActionTrail contains no telemetry, analytics, account tracking, or network communication.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
