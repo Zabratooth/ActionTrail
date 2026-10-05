@@ -17,20 +17,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p docs dist
-          cat .payload/lua.*.b64   | base64 -d > ActionTrail.lua
-          cat .payload/png.*.b64   | base64 -d > ActionTrailIcon.png
-          cat .payload/tga.*.b64   | base64 -d > ActionTrailIcon.tga
-          cat .payload/zip.*.b64   | base64 -d > dist/ActionTrail-1.5.10.zip
-          cat .payload/debug.*.b64 | base64 -d > docs/actiontrail-debug.jpg
-          cat .payload/de.*.b64    | base64 -d > docs/actiontrail-options-de.jpg
-          cat .payload/en.*.b64    | base64 -d > docs/actiontrail-options-en.jpg
+          mkdir -p dist
+          cat .payload/lua.*.b64 | base64 -d > ActionTrail.lua
+          cat .payload/zip.*.b64 | base64 -d > dist/ActionTrail-1.5.10.zip
       - name: Commit materialized files
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ActionTrail.lua ActionTrailIcon.png ActionTrailIcon.tga dist docs
-          git commit -m 'Publish ActionTrail 1.5.10 files and screenshots'
+          git add ActionTrail.lua dist/ActionTrail-1.5.10.zip
+          git commit -m 'Publish ActionTrail 1.5.10 source and ZIP'
           git push
