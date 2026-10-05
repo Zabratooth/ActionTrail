@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.15
+- Fixed `gseHookCount` initialization when GSE executors are hooked.
+- Restored the original ActionTrail minimap icon design using a WoW-compatible 64x64 TGA loaded without file extension.
+- No other functional changes.
+
 ## 1.5.12
 - Fixed the minimap button showing a solid green placeholder.
 - Minimap icon now explicitly loads `ActionTrailIcon.tga` on the ARTWORK layer.

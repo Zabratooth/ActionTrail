@@ -3,7 +3,7 @@
 -- Released under the MIT License; see LICENSE for details.
 
 local ADDON = ...
-local VERSION = "1.5.12"
+local VERSION = "1.5.15"
 
 local localeDefault = (GetLocale and GetLocale() == "deDE") and "de" or "en"
 
@@ -164,6 +164,7 @@ local gseHooked = setmetatable({}, { __mode = "k" })
 local gsePending = {}
 local gseHistory = {}
 local gseClickSerial = 0
+local gseHookCount = 0
 local GSE_MATCH_WINDOW = 0.45
 local GSE_EMPTY_DELAY = 0.30
 local debugFrame
@@ -1025,9 +1026,10 @@ createMinimapButton = function()
     border:SetPoint("TOPLEFT", 0, 0)
 
     local icon = b:CreateTexture(nil, "ARTWORK")
-    -- Use the TGA explicitly. WoW can show a solid green placeholder when an
-    -- unsupported/ambiguous texture source is selected.
-    icon:SetTexture("Interface\\AddOns\\ActionTrail\\ActionTrailIcon.tga")
+    -- Use the custom ActionTrail icon again, but load it in the classic WoW
+    -- style without a file extension. The bundled TGA is a simple 64x64
+    -- power-of-two texture for maximum compatibility with the Forever client.
+    icon:SetTexture("Interface\\AddOns\\ActionTrail\\ActionTrailIcon")
     icon:SetSize(22, 22)
     icon:SetPoint("CENTER", 0, 1)
     icon:SetTexCoord(0.06, 0.94, 0.06, 0.94)

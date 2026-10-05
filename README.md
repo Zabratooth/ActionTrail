@@ -2,7 +2,7 @@
 
 ## ⬇ Download
 
-**[Download ActionTrail 1.5.12 ZIP](https://github.com/Zabratooth/ActionTrail/raw/refs/heads/main/dist/ActionTrail-1.5.12.zip)**
+**[Download ActionTrail 1.5.15 ZIP](https://github.com/Zabratooth/ActionTrail/raw/refs/heads/main/dist/ActionTrail-1.5.15.zip)**
 
 Extract the ZIP and copy the included `ActionTrail` folder to your WoW Forever `Interface/AddOns/` folder.
 
@@ -54,7 +54,7 @@ ActionTrail is a lightweight action-history and GSE diagnostics addon for **WoW 
 
 > Do **not** use GitHub's **Code → Download ZIP** for normal addon installation. That downloads the whole repository. Use the addon ZIP linked at the top instead.
 
-1. Download `ActionTrail-1.5.12.zip`.
+1. Download `ActionTrail-1.5.15.zip`.
 2. Extract the ZIP. It contains a single `ActionTrail` folder.
 3. Copy that folder into the appropriate WoW Forever `Interface/AddOns` folder.
 4. Start WoW Forever or use `/reload`.
@@ -106,7 +106,7 @@ The long internal GSE executor frame name is hidden by default and can be enable
 
 - WoW Forever
 - Interface: `16001`
-- Current addon version: **1.5.12**
+- Current addon version: **1.5.15**
 
 ## Privacy
 
