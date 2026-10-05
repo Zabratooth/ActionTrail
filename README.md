@@ -1,90 +1,97 @@
 # ActionTrail
 
-**Current version: 1.5.5**
+ActionTrail is a lightweight action-history and GSE diagnostics addon for **WoW Forever**.
 
-ActionTrail is a lightweight **World of Warcraft: Forever** addon for visualizing your own recent actions and debugging GSE/WoWLazyMacros sequences.
+It shows your recent actions as a compact icon trail and can optionally display a live GSE debug history. The addon only observes what the client and GSE do; it does **not** cast spells, automate gameplay, or modify GSE's secure executor.
 
-It is designed as a diagnostic tool: ActionTrail observes what the WoW client reports for your character and displays it. It does **not** cast spells, press buttons, or automate gameplay.
+## Screenshots
+
+### GSE debug
+![ActionTrail GSE debug](docs/actiontrail-debug.jpg)
+
+### Options
+![ActionTrail options](docs/actiontrail-options-en.jpg)
+
+The options UI can be switched between **English** and **German**.
 
 ## Features
 
-- Moving history of your recent spell/action icons
-- Configurable icon count and size
-- Optional fade-out and combat-only visibility
-- Optional Wand Shoot, Auto Shot, and melee entries
-- Special handling for auto-repeat abilities such as **Shoot (SpellID 5019)**
-- Optional GSE debug panel with click number, GSE step, detected spell, and click-to-cast timing
-- German and English interface, including minimap tooltip text
-- Movable minimap button with dedicated ActionTrail icon
-- GSE executor rescan and hook diagnostics
+- Sliding history of recent player casts/actions
+- Configurable icon count and icon size
+- Optional combat-only display
+- Optional fade-out
+- Minimap button with draggable position
+- Auto-repeat handling for:
+  - Wand Shoot
+  - Auto Shot
+  - normal melee attacks
+- GSE diagnostics:
+  - GSE trigger history
+  - running click number
+  - active modifiers (`SHIFT`, `ALT`, `CTRL`)
+  - cast latency
+  - optional no-cast entries
+  - configurable debug history length
+  - optional technical GSE executor information
+- Optional suppression of red action-error spam such as:
+  - `Ability is not ready yet`
+  - `Not enough energy`
+  - `Out of range`
+- German / English UI
+- No network access, analytics, telemetry, or external services
 
 ## Installation
 
-1. Download the current ActionTrail ZIP.
-2. Extract the `ActionTrail` folder into the appropriate WoW Forever `Interface/AddOns/` folder.
-3. Start or reload WoW.
-4. Type `/at` to open the settings.
-
-## Language
-
-Use:
-
-- `/at lang de` — German
-- `/at lang en` — English
-
-The active language is also selectable from the ActionTrail settings window.
+1. Download the current ZIP from this repository:
+   - [`dist/ActionTrail-1.5.10.zip`](dist/ActionTrail-1.5.10.zip)
+2. Extract the `ActionTrail` folder into the appropriate WoW Forever `Interface/AddOns` folder.
+3. Start or reload the game.
+4. Use `/at` to open the options.
 
 ## Useful commands
 
-- `/at` — open settings
-- `/at unlock` / `/at lock`
-- `/at size 16-64`
-- `/at count 1-10`
-- `/at minimap on|off`
-- `/at wand on|off`
-- `/at autoshot on|off`
-- `/at melee on|off`
-- `/at auto on|off`
-- `/at combat on|off`
-- `/at fade on|off`
-- `/at fadetime 2-20`
-- `/at gsedebug on|off`
-- `/at gseempty on|off`
-- `/at gsescan`
-- `/at gseclear`
-- `/at status`
-
-## GSE diagnostics
-
-ActionTrail does not change a GSE sequence or its secure attributes. The optional debug mode observes GSE executor button clicks and correlates them with the subsequent spell/action reported by the WoW client.
-
-Example:
-
 ```text
-G156  step 1  Sinister Strike  +77ms
-G121  step 1  Sinister Strike  +93ms
+/at
+/at lang de
+/at lang en
+/at gsedebug on
+/at gsedebug off
+/at gsescan
+/at gseclear
+/at errors off
+/at errors on
+/at minimap on
+/at minimap off
+/at status
 ```
 
-`/at gsescan` forces a fresh scan for GSE executor buttons. `/at status` reports the number of hooked GSE executors.
+`/at errors off` hides WoW action-error messages. `/at errors on` restores them.
+
+## GSE debug example
+
+```text
+G90 [SHIFT] step 1 | Gouge +105ms
+G38 [CTRL]  step 1 | Sinister Strike +99ms
+G19 [ALT]   step 1 | Slice and Dice +10ms
+G10         step 1 | Sinister Strike +94ms
+```
+
+The long internal GSE executor frame name is hidden by default and can be enabled with **Show technical GSE info**.
 
 ## Compatibility
 
-Developed and tested for **WoW Forever** (Interface `16001`).
+- WoW Forever
+- Interface: `16001`
+- Current addon version: **1.5.10**
 
-## Privacy / telemetry
+## Privacy
 
-ActionTrail contains no telemetry, analytics, account tracking, or network communication.
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md).
+ActionTrail runs entirely inside the game client. It contains no telemetry, analytics, network requests, or account tracking.
 
 ## License
 
-ActionTrail is released under the **MIT License**. See [LICENSE](LICENSE).
+MIT License. See [LICENSE](LICENSE).
 
 ## Disclaimer
 
-ActionTrail is an independent addon and is not affiliated with or endorsed by Blizzard Entertainment or the GSE/WoWLazyMacros projects.
-
-World of Warcraft, game names, spell names, icons, and other game assets are property of Blizzard Entertainment.
+ActionTrail is an independent community addon. It is not affiliated with or endorsed by Blizzard Entertainment, GSE, or WoWLazyMacros.
