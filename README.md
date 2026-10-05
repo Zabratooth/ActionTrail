@@ -1,5 +1,7 @@
 # ActionTrail
 
+**Recommended download:** [ActionTrail 1.5.10 ZIP](https://github.com/Zabratooth/ActionTrail/raw/refs/heads/main/dist/ActionTrail-1.5.10.zip)
+
 ActionTrail is a lightweight action-history and GSE diagnostics addon for **WoW Forever**.
 
 It shows your recent actions as a compact icon trail and can optionally display a live GSE debug history. The addon only observes what the client and GSE do; it does **not** cast spells, automate gameplay, or modify GSE's secure executor.
