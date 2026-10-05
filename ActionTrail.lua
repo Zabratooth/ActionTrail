@@ -3,7 +3,7 @@
 -- Released under the MIT License; see LICENSE for details.
 
 local ADDON = ...
-local VERSION = "1.5.11"
+local VERSION = "1.5.12"
 
 local localeDefault = (GetLocale and GetLocale() == "deDE") and "de" or "en"
 
@@ -1024,11 +1024,13 @@ createMinimapButton = function()
     border:SetSize(53, 53)
     border:SetPoint("TOPLEFT", 0, 0)
 
-    local icon = b:CreateTexture(nil, "BACKGROUND")
-    icon:SetTexture("Interface\\AddOns\\ActionTrail\\ActionTrailIcon")
-    icon:SetSize(20, 20)
+    local icon = b:CreateTexture(nil, "ARTWORK")
+    -- Use the TGA explicitly. WoW can show a solid green placeholder when an
+    -- unsupported/ambiguous texture source is selected.
+    icon:SetTexture("Interface\\AddOns\\ActionTrail\\ActionTrailIcon.tga")
+    icon:SetSize(22, 22)
     icon:SetPoint("CENTER", 0, 1)
-    icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+    icon:SetTexCoord(0.06, 0.94, 0.06, 0.94)
 
     local highlight = b:CreateTexture(nil, "HIGHLIGHT")
     highlight:SetTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")

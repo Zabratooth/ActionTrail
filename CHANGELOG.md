@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.12
+- Fixed the minimap button showing a solid green placeholder.
+- Minimap icon now explicitly loads `ActionTrailIcon.tga` on the ARTWORK layer.
+- Slightly adjusted icon size/crop; drag and click behavior unchanged.
+
 ## 1.5.11
 - Fixed the corrupted Lua source/package published for 1.5.10.
 - Restored the complete working GSE executor scan.
