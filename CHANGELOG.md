@@ -1,40 +1,53 @@
 # Changelog
 
-All notable public changes to ActionTrail are documented here.
+## 1.5.10
+- Shortened the action-error toggle label so it fits cleanly in the right-hand options column.
+- German: `Aktionsfehler ausblenden`
+- English: `Hide action errors`
 
-## 1.5.5 — 2026-10-04
+## 1.5.9
+- Hid the long internal GSE executor frame name from normal debug rows.
+- Added optional **Technische GSE-Infos anzeigen / Show technical GSE info**.
+- Reduced debug-line width and improved readability.
 
-- Redesigned the **DE / EN language selector** in the settings window.
-- The active language is now clearly highlighted.
-- Improved spacing, hover feedback, and visual consistency of the language buttons.
-- Kept the restored GSE debug behavior from 1.5.4 unchanged.
+## 1.5.8
+- Reworked the options layout to use the available window width more efficiently.
+- Moved the action-error toggle into the right-hand column.
+- Shifted GSE debug controls upward.
+- Kept the existing window height.
 
-## 1.5.4 — 2026-10-04
+## 1.5.7
+- Added optional suppression of red WoW action-error messages (`UI_ERROR_MESSAGE`).
+- Covers common macro/GSE spam such as `Ability is not ready yet`, `Not enough energy`, and `Out of range`.
+- Added `/at errors off` and `/at errors on`.
+- Setting persists across reload/login.
 
-- Fixed missing GSE debug output with some executor variants.
-- Expanded GSE executor discovery to support frames that expose `step` without `ms`.
-- Added support for following `clickbutton` targets when locating GSE executors.
-- Added `/at gsescan` for a manual GSE executor rescan.
-- `/at status` now reports the number of hooked GSE executors.
+## 1.5.6
+- GSE debug now records active keyboard modifiers at click time.
+- Displays `SHIFT`, `ALT`, `CTRL`, and modifier combinations only when used.
 
-## 1.5.3 — 2026-10-04
+## 1.5.5
+- Redesigned the DE/EN language controls.
+- Added clearer selected-language state and hover feedback.
+- Improved spacing near the close button.
 
-- Replaced the minimap icon with a simpler, high-contrast ActionTrail `A` icon designed for small minimap display.
+## 1.5.4
+- Improved GSE executor detection for alternate/newer executor frames.
+- Added support for `step`-only executor detection and `clickbutton` targets.
+- Added `/at gsescan`.
+- `/at status` reports the number of hooked GSE executors.
 
-## 1.5.2 — 2026-10-04
+## 1.5.3
+- Updated addon icon and version metadata.
 
-- Fixed an initialization error introduced by the language system in 1.5.1.
-- Restored normal addon loading, `/at`, and minimap functionality.
+## 1.5.2
+- Fixed startup failure introduced in 1.5.1.
+- Restored working German/English localization.
 
-## 1.5.1 — 2026-10-04
+## 1.5.1
+- Initial localization work for German/English UI.
 
-- Added switchable **German / English** interface text.
-- Added translated minimap tooltip and settings labels.
-- Added `/at lang de` and `/at lang en`.
-
-## 1.5.0 — 2026-10-04
-
-- Prepared ActionTrail for public release under the **Zabratooth** author identity.
-- Added MIT licensing and public documentation.
-- Added the custom ActionTrail addon icon.
-- Retained action history, auto-repeat handling, minimap controls, and optional GSE diagnostics from the development builds.
+## 1.5.0
+- Added GSE debug overlay and minimap controls.
+- Added Wand Shoot / Auto Shot / melee history options.
+- Added configurable history, fade, combat-only mode, positioning, and reset controls.
