@@ -10,9 +10,14 @@ It shows your recent actions as a compact icon trail and can optionally display 
 ![ActionTrail GSE debug](docs/actiontrail-debug.jpg)
 
 ### Options
-![ActionTrail options](docs/actiontrail-options-en.jpg)
 
-The options UI can be switched between **English** and **German**.
+**English**
+
+![ActionTrail options EN](docs/actiontrail-options-en.jpg)
+
+**Deutsch**
+
+![ActionTrail options DE](docs/actiontrail-options-de.jpg)
 
 ## Features
 
