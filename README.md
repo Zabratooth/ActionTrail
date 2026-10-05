@@ -30,13 +30,31 @@ It shows your recent actions as a compact icon trail and can optionally display 
 - German / English UI
 - No network access, analytics, telemetry, or external services
 
-## Installation
+## Download & Installation
 
-1. Download the current ZIP from this repository:
-   - [`dist/ActionTrail-1.5.10.zip`](dist/ActionTrail-1.5.10.zip)
-2. Extract the `ActionTrail` folder into the appropriate WoW Forever `Interface/AddOns` folder.
-3. Start or reload the game.
-4. Use `/at` to open the options.
+**Recommended download:** [ActionTrail 1.5.10 ZIP](https://github.com/Zabratooth/ActionTrail/raw/refs/heads/main/dist/ActionTrail-1.5.10.zip)
+
+> Do **not** use GitHub's **Code → Download ZIP** for normal addon installation. That downloads the whole repository. Use the addon ZIP linked above instead.
+
+1. Download `ActionTrail-1.5.10.zip` using the link above.
+2. Extract the ZIP. It contains a single `ActionTrail` folder.
+3. Copy that `ActionTrail` folder into the appropriate WoW Forever `Interface/AddOns` folder.
+4. Start WoW Forever or use `/reload` if the game is already running.
+5. Use `/at` to open the options.
+
+The final folder structure should look like this:
+
+```text
+Interface/
+└─ AddOns/
+   └─ ActionTrail/
+      ├─ ActionTrail.lua
+      ├─ ActionTrail.toc
+      ├─ ActionTrailIcon.png
+      ├─ ActionTrailIcon.tga
+      ├─ README.md
+      └─ LICENSE
+```
 
 ## Useful commands
 
