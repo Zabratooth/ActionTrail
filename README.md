@@ -1,10 +1,28 @@
 # ActionTrail
 
-**Recommended download:** [ActionTrail 1.5.10 ZIP](https://github.com/Zabratooth/ActionTrail/raw/refs/heads/main/dist/ActionTrail-1.5.10.zip)
+## ⬇ Download
 
-ActionTrail is a lightweight action-history and GSE diagnostics addon for **WoW Forever**.
+**[Download ActionTrail 1.5.10 ZIP](https://github.com/Zabratooth/ActionTrail/raw/refs/heads/main/dist/ActionTrail-1.5.10.zip)**
 
-It shows your recent actions as a compact icon trail and can optionally display a live GSE debug history. The addon only observes what the client and GSE do; it does **not** cast spells, automate gameplay, or modify GSE's secure executor.
+Extract the ZIP and copy the included `ActionTrail` folder to your WoW Forever `Interface/AddOns/` folder.
+
+ActionTrail is a lightweight action-history and GSE diagnostics addon for **WoW Forever**. It shows recent actions as a compact icon trail and can optionally display a live GSE debug history. The addon only observes what the client and GSE do; it does **not** cast spells, automate gameplay, or modify GSE's secure executor.
+
+## Screenshots
+
+### GSE debug
+
+![ActionTrail GSE debug](docs/actiontrail-debug.jpg)
+
+### Options
+
+**English**
+
+![ActionTrail options EN](docs/actiontrail-options-en.jpg)
+
+**Deutsch**
+
+![ActionTrail options DE](docs/actiontrail-options-de.jpg)
 
 ## Features
 
@@ -32,19 +50,15 @@ It shows your recent actions as a compact icon trail and can optionally display 
 - German / English UI
 - No network access, analytics, telemetry, or external services
 
-## Download & Installation
+## Installation
 
-**Recommended download:** [ActionTrail 1.5.10 ZIP](https://github.com/Zabratooth/ActionTrail/raw/refs/heads/main/dist/ActionTrail-1.5.10.zip)
+> Do **not** use GitHub's **Code → Download ZIP** for normal addon installation. That downloads the whole repository. Use the addon ZIP linked at the top instead.
 
-> Do **not** use GitHub's **Code → Download ZIP** for normal addon installation. That downloads the whole repository. Use the addon ZIP linked above instead.
-
-1. Download `ActionTrail-1.5.10.zip` using the link above.
+1. Download `ActionTrail-1.5.10.zip`.
 2. Extract the ZIP. It contains a single `ActionTrail` folder.
-3. Copy that `ActionTrail` folder into the appropriate WoW Forever `Interface/AddOns` folder.
-4. Start WoW Forever or use `/reload` if the game is already running.
+3. Copy that folder into the appropriate WoW Forever `Interface/AddOns` folder.
+4. Start WoW Forever or use `/reload`.
 5. Use `/at` to open the options.
-
-The final folder structure should look like this:
 
 ```text
 Interface/
