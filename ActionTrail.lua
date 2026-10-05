@@ -3,7 +3,7 @@
 -- Released under the MIT License; see LICENSE for details.
 
 local ADDON = ...
-local VERSION = "1.5.10"
+local VERSION = "1.5.11"
 
 local localeDefault = (GetLocale and GetLocale() == "deDE") and "de" or "en"
 
@@ -264,153 +264,6 @@ local function refreshDebugFrame()
                     parts[#parts+1] = ("[%s]"):format(rec.modifier)
                 end
                 if ActionTrailDB.showGSEFrameInfo and rec.sequence and rec.sequence ~= "" then
-                    parts[#parts+1] = rec.sequence
-                end
-                if rec.step then
-                    parts[#parts+1] = ("step %s"):format(tostring(rec.step))
-                end
-                local spellText
-                if rec.spellID then
-                    spellText = formatSpellName(rec.spellID)
-                    if ActionTrailDB.gseLatency and rec.deltaMS then
-                        spellText = spellText .. (" +%dms"):format(rec.deltaMS)
-                    end
-                elseif rec.empty then
-                    spellText = ActionTrailDB.gseMarkEmpty and "— kein Cast" or ""
-                else
-                    spellText = "…"
-                end
-                if spellText ~= "" then parts[#parts+1] = "→ " .. spellText end
-                fs:SetText(table.concat(parts, "  "))
-                fs:Show()
-            else
-                fs:SetText("")
-                fs:Hide()
-            end
-        else
-            fs:SetText("")
-            fs:Hide()
-      end
-    end
-end
-
-local function buildDebugFrame()
-    if debugFrame then return end
-    debugFrame = CreateFrame("Frame", "ActionTrailGSEDebugFrame", UIParent, "BackdropTemplate")
-    debugFrame:SetFrameStrata("HIGH")
-    debugFrame:SetBackdroundColor(0, 0.08, 0.12, 0.88)
-    debugFrame:SetBackdropBorderColor(0.1, 0.8, 1, 0.6)
-    debugFrame:Hide()
-    for i = 1, 15 do
-        local fs = debugFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-        fs:SetSoint("TOPLEFT", 6, -5 - (i - 1) * 15)
-        fs:SetJustifyH("LEFT")
-        debugLines[i] = fs
-    end
-end
-
--- Recursively search a table for a value. We cap depth/breadth
--- because GSE sequence tables can be large and can contain cycles.
-local function findRecursive(t, wantedKey, depth, seen)
-    if type(t) ~= "table" or depth > 6 then return nil end
-    seen = seen or {}
-    if seen[t] then return nil end
-    seen[t] = true
-    if rawget(t, wantedKey) ~= nil then return rawget(t, wantedKey) end
-    local count = 0
-    for _, v in pairs(t) do
-        count = count + 1
-        if count > 250 then break end
-        if type(v) == "table" then
-            local found = findRecursive(v, wantedKey, depth + 1, seen)
-            if found ~= nil then return found end
-        end
-    end
-end
-
-local function toSafeString(v)
-    if secret(v) then return nil end
-    local ok, s = pcall(tostring, v)
-    if not ok or secret(s) then return nil end
-    return s
-end
-
-local function trimGSEHistory()
-    local limit = math.max(30, (tonumber(ActionTrailDB.gseDebugRows) or 8) * 4)
-    while #gseHistory > limit do table.remove(gseHistory) end
-end
-
-local function findPendingGSE(now)
-    for i = #gsePending, 1, -1 do
-        local rec = gsePending[i]
-        if now - rec.time <= GSE_MATCH_WINDOW then
-            return rec
-        elseif now - rec.time > 1.5 then
-            table.remove(gsePending, i)
-        end
-    end
-end
-
-local function noteGSEClick(frame)
-    if not ActionTrailDB.gseDebug then return end
-    if ActionTrailDB.gseDebugCombatOnly and not UnitAffectingCombat("player") then return end
-
-    gseClickSerial = gseClickSerial + 1
-    local now = GetTime()
-    local step,
-ms, sequence
-    if frame and frame.GetAttribute then
-        local ok, v = pcall(frame.GetAttribute, frame, "step")
-        if ok then step = toSafeString(v) end
-        ok, v = pcall(frame.GetAttribute, frame, "ms")
-        if ok then ms = toSafeString(v) end
-        ok, v = pcall(frame.GetAttribute, frame, "type")
-        if ok then sequence = toSafeString(v) end
-    end
-
-    local mods = {}
-    if IsShiftKeyDown and IsShiftKeyDown() then mods[#mods + 1] = "SHIFT" end
-    if IsAltKeyDown and IsAltKeyDown() then mods[#mods + 1] = "ALT" end
-    if IsControlKeyDown and IsControlKeyDown() then mods[#mods + 1] = "CTRL" end
-
-    local rec = {
-        number = gseClickSerial,
-        time = now,
-        frame = frame,
-        modifier = (#mods > 0) and table.concat(mods, "+") or nil,
-        sequence = (frame and frame.GetName and frame:GetName()) or "GSE",
-        step = step,
-        ms = ms,
-        spellID = nil,
-        deltaMS = nil,
-        empty = false,
-    }
-    table.insert(gsePending, rec)
-    table.insert(gseHistory, 1, rec)
-    trimGSEHistory()
-    refreshDebugFrame()
-end
-
-local function hookGSEExecutor(frame)
-    if not frame or gseHooked[frame] or not frame.HookScript then return false end
-    local ok = pcall(function()
-        frame:HookScript("OnClick", function(self)
-            -- HookScript is deliberately non-secure: we observe only, and never
-            -- write attributes on GSE's protected executor.
-            noteGSEClick(self)
-        end)
-    end)
-    if ok then
-        gseHooked[frame] = true
-        gseHookCount = gseHookCount + 1
-    end
-    return ok
-end
-
--- Try to find and hook GSE executors. GSE typically park secure execution
--- behind a clickbutton attribute on action bar buttons. We support both the frame itself
--- and a frame name stored in the attribute.
-quence and rec.sequence ~= "" then
                     parts[#parts+1] = rec.sequence
                 end
                 if rec.step then
@@ -787,7 +640,7 @@ local function noteRequest(castGUID, spellID)
     end
 
     if castGUID and not secret(castGUID) then recentRequestsByGUID[castGUID] = now end
-    if spellID and not secret(spellID) then recentRequestsBySpel[spellID] = now end
+    if spellID and not secret(spellID) then recentRequestsBySpell[spellID] = now end
 end
 
 local function handleSpellEvent(event, castGUID, spellID)
@@ -883,7 +736,7 @@ local function handleAutoRepeatStart()
 
     -- If UNIT_SPELLCAST_SENT already reported this exact Shoot/Auto Shot just
     -- before START_AUTOREPEAT_SPELL, noteRequest() has already matched the GSE
-    -- click. Only use START_AUTOREPEAT_SPELLL as a fallback when no recent spell
+    -- click. Only use START_AUTOREPEAT_SPELL as a fallback when no recent spell
     -- request exists, avoiding a second Shoot row for the same wand start.
     local now = GetTime()
     local targetGUID = UnitGUID("target") or "__notarget__"

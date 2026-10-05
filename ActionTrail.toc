@@ -1,8 +1,8 @@
 ## Interface: 16001
-## Title: ActionTrail 1.5.10
+## Title: ActionTrail 1.5.11
 ## Notes: Lightweight personal action history for WoW Forever with optional GSE click diagnostics
 ## Author: Zabratooth
-## Version: 1.5.10
+## Version: 1.5.11
 ## IconTexture: Interface\AddOns\ActionTrail\ActionTrailIcon
 ## SavedVariables: ActionTrailDB
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.11
+- Fixed the corrupted Lua source/package published for 1.5.10.
+- Restored the complete working GSE executor scan.
+- No intended feature changes beyond restoring the tested 1.5.10 behavior.
+
 ## 1.5.10
 - Shortened the action-error toggle label so it fits cleanly in the right-hand options column.
 - German: `Aktionsfehler ausblenden`
