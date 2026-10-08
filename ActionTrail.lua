@@ -3,7 +3,7 @@
 -- Released under the MIT License; see LICENSE for details.
 
 local ADDON = ...
-local VERSION = "1.5.15"
+local VERSION = "1.5.16"
 
 local localeDefault = (GetLocale and GetLocale() == "deDE") and "de" or "en"
 
@@ -338,7 +338,7 @@ local function noteGSEClick(frame)
         time = now,
         frame = frame,
         modifier = (#mods > 0) and table.concat(mods, "+") or nil,
-        sequence = (frame and frame.GetName and frame:GetName()) or "GSE",
+        sequence = "GSE",
         step = (frame and frame.GetAttribute and frame:GetAttribute("step")) or nil,
         iteration = (frame and frame.GetAttribute and frame:GetAttribute("iteration")) or nil,
         matched = false,
@@ -420,26 +420,20 @@ local function scanGSEExecutors()
             end
 
             -- Method 2: direct GSE binds can click the executor without an
-            -- action-bar override. Older GSE builds exposed both step and ms,
-            -- while newer/alternate executor frames may expose only step.
+            -- action-bar override. Avoid reading names from arbitrary frames:
+            -- Forever may expose tainted/forbidden objects during enumeration.
             local okStep, step = pcall(f.GetAttribute, f, "step")
             local okMS, ms = pcall(f.GetAttribute, f, "ms")
-            local frameName = (f.GetName and f:GetName()) or ""
-            local looksLikeGSE = frameName:match("^local%-") or frameName:lower():find("gse", 1, true)
-            if okStep and step ~= nil and ((okMS and ms ~= nil) or looksLikeGSE) then
+            if okStep and step ~= nil then
                 hookGSEExecutor(f)
             end
 
             -- Method 3: some action buttons expose only a clickbutton target.
-            -- Follow that target when it itself looks like a GSE executor.
+            -- Identify the target through its safe step attribute.
             local okClick, clickTarget = pcall(f.GetAttribute, f, "clickbutton")
-            if okClick and clickTarget and clickTarget.HookScript then
-                local targetName = (clickTarget.GetName and clickTarget:GetName()) or ""
-                local okTargetStep, targetStep = true, nil
-                if clickTarget.GetAttribute then
-                    okTargetStep, targetStep = pcall(clickTarget.GetAttribute, clickTarget, "step")
-                end
-                if targetName:match("^local%-") or targetName:lower():find("gse", 1, true) or (okTargetStep and targetStep ~= nil) then
+            if okClick and clickTarget and clickTarget.HookScript and clickTarget.GetAttribute then
+                local okTargetStep, targetStep = pcall(clickTarget.GetAttribute, clickTarget, "step")
+                if okTargetStep and targetStep ~= nil then
                     hookGSEExecutor(clickTarget)
                 end
             end
