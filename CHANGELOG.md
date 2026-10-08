@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.16
+- Fixed forbidden-object errors while scanning GSE executors.
+- Removed unsafe frame-name reads from GSE executor discovery and click diagnostics.
+- GSE executor detection now uses the safe `step` attribute for direct and clickbutton targets.
+- No other functional changes.
+
 ## 1.5.15
 - Fixed `gseHookCount` initialization when GSE executors are hooked.
 - Restored the original ActionTrail minimap icon design using a WoW-compatible 64x64 TGA loaded without file extension.
