@@ -1,137 +1,29 @@
-name: Publish ActionTrail 1.5.16
+name: Package ActionTrail 1.5.16
 
 on:
   push:
     paths:
-      - '.release-1516'
-
-permissions:
-  contents: write
+      - ".release-1516b"
 
 jobs:
-  publish:
+  package:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Update source and package
-        shell: bash
+      - name: Build addon ZIP
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import zipfile
-
-          lua = Path("ActionTrail.lua")
-          s = lua.read_text(encoding="utf-8")
-          s = s.replace('local VERSION = "1.5.15"', 'local VERSION = "1.5.16"', 1)
-
-          old = '''            -- Method 2: direct GSE binds can click the executor without an
-            -- action-bar override. Older GSE builds exposed both step and ms,
-            -- while newer/alternate executor frames may expose only step.
-            local okStep, step = pcall(f.GetAttribute, f, "step")
-            local okMS, ms = pcall(f.GetAttribute, f, "ms")
-            local frameName = (f.GetName and f:GetName()) or ""
-            local looksLikeGSE = frameName:match("^local%-") or frameName:lower():find("gse", 1, true)
-            if okStep and step ~= nil and ((okMS and ms ~= nil) or looksLikeGSE) then
-                hookGSEExecutor(f)
-            end
-
-            -- Method 3: some action buttons expose only a clickbutton target.
-            -- Follow that target when it itself looks like a GSE executor.
-            local okClick, clickTarget = pcall(f.GetAttribute, f, "clickbutton")
-            if okClick and clickTarget and clickTarget.HookScript then
-                local targetName = (clickTarget.GetName and clickTarget:GetName()) or ""
-                local okTargetStep, targetStep = true, nil
-                if clickTarget.GetAttribute then
-                    okTargetStep, targetStep = pcall(clickTarget.GetAttribute, clickTarget, "step")
-                end
-                if targetName:match("^local%-") or targetName:lower():find("gse", 1, true) or (okTargetStep and targetStep ~= nil) then
-                    hookGSEExecutor(clickTarget)
-                end
-            end
-'''
-          new = '''            -- Method 2: direct GSE binds can click the executor without an
-            -- action-bar override. Avoid reading names from arbitrary frames:
-            -- Forever may expose tainted/forbidden objects during enumeration.
-            local okStep, step = pcall(f.GetAttribute, f, "step")
-            local okMS, ms = pcall(f.GetAttribute, f, "ms")
-            if okStep and step ~= nil then
-                hookGSEExecutor(f)
-            end
-
-            -- Method 3: some action buttons expose only a clickbutton target.
-            -- Identify the target through its safe step attribute, not GetName().
-            local okClick, clickTarget = pcall(f.GetAttribute, f, "clickbutton")
-            if okClick and clickTarget and clickTarget.HookScript and clickTarget.GetAttribute then
-                local okTargetStep, targetStep = pcall(clickTarget.GetAttribute, clickTarget, "step")
-                if okTargetStep and targetStep ~= nil then
-                    hookGSEExecutor(clickTarget)
-                end
-            end
-'''
-          if old not in s:
-              raise SystemExit("Expected GSE scan block not found")
-          s = s.replace(old, new, 1)
-          lua.write_text(s, encoding="utf-8")
-
-          toc = Path("ActionTrail.toc")
-          t = toc.read_text(encoding="utf-8")
-          t = t.replace("## Title: ActionTrail 1.5.15", "## Title: ActionTrail 1.5.16", 1)
-          t = t.replace("## Version: 1.5.15", "## Version: 1.5.16", 1)
-          toc.write_text(t, encoding="utf-8")
-
-          readme = Path("README.md")
-          r = readme.read_text(encoding="utf-8")
-          r = r.replace("ActionTrail 1.5.15 ZIP", "ActionTrail 1.5.16 ZIP")
-          r = r.replace("ActionTrail-1.5.15.zip", "ActionTrail-1.5.16.zip")
-          r = r.replace("Current addon version: **1.5.15**", "Current addon version: **1.5.16**")
-          readme.write_text(r, encoding="utf-8")
-
-          changelog = Path("CHANGELOG.md")
-          c = changelog.read_text(encoding="utf-8")
-          entry = """## 1.5.16
-- Fixed forbidden-object errors while scanning GSE executors.
-- ActionTrail no longer reads names from arbitrary/tainted frames during executor discovery.
-- GSE executor detection now uses the safe `step` attribute for direct and clickbutton targets.
-- No other functional changes.
-
-"""
-          if "## 1.5.16" not in c:
-              c = c.replace("# Changelog\n\n", "# Changelog\n\n" + entry, 1)
-          changelog.write_text(c, encoding="utf-8")
-
-          # Safety check: the runtime source must contain no :GetName() calls.
-          final = lua.read_text(encoding="utf-8")
-          if ":GetName()" in final:
-              raise SystemExit("Unsafe :GetName() call still present")
-
-          out = Path("dist/ActionTrail-1.5.16.zip")
-          out.parent.mkdir(parents=True, exist_ok=True)
-          files = [
-              "ActionTrail.lua",
-              "ActionTrail.toc",
-              "ActionTrailIcon.png",
-              "ActionTrailIcon.tga",
-              "README.md",
-              "LICENSE",
-              "CHANGELOG.md",
-          ]
-          with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
-              for fn in files:
-                  p = Path(fn)
-                  if not p.exists():
-                      raise SystemExit(f"Missing package file: {fn}")
-                  z.write(p, f"ActionTrail/{fn}")
-          print(out)
-          PY
-
-      - name: Commit 1.5.16
-        shell: bash
+          rm -rf build/ActionTrail
+          mkdir -p build/ActionTrail dist
+          cp ActionTrail.lua ActionTrail.toc ActionTrailIcon.png ActionTrailIcon.tga README.md LICENSE CHANGELOG.md build/ActionTrail/
+          cd build
+          zip -r ../dist/ActionTrail-1.5.16.zip ActionTrail
+          cd ..
+      - name: Commit package
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ActionTrail.lua ActionTrail.toc README.md CHANGELOG.md dist/ActionTrail-1.5.16.zip
-          git commit -m "Release ActionTrail 1.5.16"
+          git add dist/ActionTrail-1.5.16.zip
+          git commit -m "Package ActionTrail 1.5.16"
           git push
